@@ -1,0 +1,10 @@
+﻿soundcard
+pyaudio
+ailia
+ailia-tokenizer
+ailia-voice
+ailia-speech
+ailia-llm
+soundfile
+numpy
+langdetect
