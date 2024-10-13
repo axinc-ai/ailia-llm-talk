@@ -33,7 +33,7 @@ class S2T():
         self.init_ailia_speech()
 
         if vad_enable:
-            recognized_text = self.speech.transcribe(buf, sample_rate)
+            recognized_text = self.speech.transcribe(buf, sample_rate, lang="en")
         else:
             complete = False
             recognized_text = self.speech.transcribe_step(buf, sample_rate, complete, lang="ja")
