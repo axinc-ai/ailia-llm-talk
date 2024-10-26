@@ -6,5 +6,9 @@ ailia-voice
 ailia-speech
 ailia-llm
 soundfile
-numpy
+numpy<2
+pyaudio
 langdetect
+opencv-python
+pillow
+librosa
