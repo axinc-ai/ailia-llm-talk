@@ -12,6 +12,8 @@ import time
 import re
 import os
 
+import ailia
+
 from langdetect import detect
 
 def check_is_english(text):
@@ -48,7 +50,15 @@ class T2S():
 
 	def init_ailia_voice(self):
 		if self.first:
-			self.voice = ailia_voice.GPTSoVITS()
+			env_list = ailia.get_environment_list()
+			env_id = -1
+			for env in env_list:
+				if "cuDNN" in env.name and not "FP16" in env.name:
+					print("GPU Selected", env)
+					env_id = env.id
+			if env_id == -1:
+				print("GPU not found. We will use CPU.")
+			self.voice = ailia_voice.GPTSoVITS(env_id = env_id)
 			self.voice.initialize_model(model_path = "./models/")
 			self.first = False
 
