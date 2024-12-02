@@ -1,5 +1,4 @@
-﻿from openai import OpenAI
-import os
+﻿import os
 import numpy as np
 import time
 import ailia_speech
