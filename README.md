@@ -12,7 +12,20 @@ By having conversations with AI, it serves as a demonstration of studying Englis
 
 ![demo](demo.png)
 
+## supported environments
+
+- windows 10 or macOS 13.3 abd later
+- Pythno 3.11 and later
+
 ## setup
+
+### Windows
+
+```
+pip3 install -r requirements.txt
+```
+
+### macOS
 
 ```
 brew install portaudio
