@@ -1,11 +1,7 @@
 ﻿import cv2
 import numpy as np
-import json
 import threading
-import math
 import time
-import glob
-import random
 
 from mic import Microphone
 from PIL import ImageFont, ImageDraw, Image
@@ -17,7 +13,7 @@ FULL_SCREEN = False
 VAD_ENABLE = True
 
 def split_text(text, font_size, width):
-	text_in_one_line = width // font_size
+	text_in_one_line = width // font_size * 2
 	text_list = [text[i: i + text_in_one_line] for i in range(0, len(text), text_in_one_line)]
 	return text_list
 
@@ -59,14 +55,21 @@ def ui_process(chat, mic, s2t):
 		y = 240
 		img[:] = 0
 
-		transcript = s2t.get_transcript()
-		keyword = chat.get_display_keyword()
+		transcript = chat.get_transcript()
 		answer = chat.get_display_answer()
-		vol = mic.get_volume()
-		if VAD_ENABLE :
-			conf = vad.get_conf()
+
+		if s2t.is_transcripting():
+			transcript = "Transcripting..."
+
+		if chat.is_waiting():
+			vol = mic.get_volume()
+			if VAD_ENABLE :
+				conf = vad.get_conf()
+			else:
+				conf = vol
 		else:
-			conf = vol
+			vol = 0
+			conf = 0
 		
 		img_pil = Image.fromarray(img)
 		draw = ImageDraw.Draw(img_pil)
@@ -107,14 +110,14 @@ def mic_process(mic, vad, s2t, chat):
 	while (not mic_thread_terminate):
 		pcm = mic.step()
 		sample_rate = 44100
+		if not chat.is_waiting():
+			continue
 		if VAD_ENABLE:
 			vad.process(pcm, sample_rate)
 			data = vad.split()
-			vol = vad.get_conf()
 			sample_rate = 16000
 		else:
 			data = pcm
-			vol = mic.get_volume()
 		if data is not None:
 			transcript = s2t.process(data, sample_rate, VAD_ENABLE)
 			if transcript != "":

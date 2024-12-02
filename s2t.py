@@ -1,11 +1,9 @@
-﻿import os
-import numpy as np
-import time
-import ailia_speech
+﻿import ailia_speech
 import ailia
 
 class S2T():
     transcript = ""
+    transcripting = False
     first = True
 
     def __init__(self):
@@ -28,9 +26,11 @@ class S2T():
 
     def process(self, buf, sample_rate, vad_enable):
         if vad_enable:
-            self.transcript = "transcripting..."
+            self.transcript = "Transcripting..."
+            self.transcripting = True
         transcript = self.whisper_ailia(buf, sample_rate, vad_enable)
         if transcript != "":
+            self.transcripting = False
             self.transcript = transcript
         return transcript
     
@@ -52,4 +52,8 @@ class S2T():
 
     def get_transcript(self):
         return self.transcript
+
+    def is_transcripting(self):
+        return self.transcripting
+    
 
