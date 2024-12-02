@@ -93,6 +93,11 @@ class T2S():
 			voice_queue.append(speech_file_path)
 			self.cnt = self.cnt + 1
 
+		while True:
+			if len(voice_queue) <= 0:
+				break
+			time.sleep(0.01)
+
 	def speech_ailia(self, text, speech_file_path, ref_file_path, ref_text, is_english):
 		# Load reference audio
 		audio_waveform, sampling_rate = librosa.load(ref_file_path, mono=True)
