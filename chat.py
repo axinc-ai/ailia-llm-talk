@@ -39,6 +39,10 @@ class Chat():
 
 	def _talk(self, query):
 		self.display_answer = self.chain.query(query, self.system_prompt, self.chat_history)
+		if self.chain.context_full():
+			self.chat_history = []
+			if self.display_answer == "":
+				self.display_answer = self.chain.query(query, self.system_prompt, self.chat_history)
 		self.t2s.speech(self.display_answer)
 		self.chat_history.append([query, self.display_answer])
 	

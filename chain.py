@@ -36,3 +36,6 @@ class Chain():
 			if self.stream_queue != None:
 				self.stream_queue.put(deltaText)
 		return answer
+
+	def context_full(self):
+		return self.llm.context_full()
