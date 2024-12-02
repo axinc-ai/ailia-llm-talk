@@ -33,15 +33,14 @@ def text_multiline(draw, font, text, x, y, width):
 		y += (font_size * 1.5)
 
 def ui_process(chat, mic, s2t):
-	img = np.zeros((1080, 1920, 3), dtype = np.uint8)
+	w = 640
+	h = 480
+
+	img = np.zeros((h, w, 3), dtype = np.uint8)
 	
 	if FULL_SCREEN:
 		cv2.namedWindow("ailia LLM Talk", cv2.WND_PROP_FULLSCREEN)
 		cv2.setWindowProperty("ailia LLM Talk", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-
-	w = 1920
-	w2 = 1080
-	h = 1080
 
 	frame_shown = False
 	frame_cnt = 0
@@ -56,8 +55,8 @@ def ui_process(chat, mic, s2t):
 		if frame_shown and cv2.getWindowProperty('ailia LLM Talk', cv2.WND_PROP_VISIBLE) == 0:
 			break
 
-		x = (1920-w2)//2
-		y = 480
+		x = 0
+		y = 240
 		img[:] = 0
 
 		transcript = s2t.get_transcript()
